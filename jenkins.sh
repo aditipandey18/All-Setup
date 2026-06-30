@@ -1,15 +1,15 @@
-#STEP-1: INSTALLING GIT JAVA-1.8.0 MAVEN 
-yum install git java-1.8.0-openjdk maven -y
+#! /bin/bash
+sudo apt update
+sudo apt install fontconfig openjdk-21-jre -y
+java -version
 
-#STEP-2: GETTING THE REPO (jenkins.io --> download -- > redhat)
-sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
-sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+sudo wget -O /etc/apt/keyrings/jenkins-keyring.asc \
+  https://pkg.jenkins.io/debian-stable/jenkins.io-2026.key
+echo "deb [signed-by=/etc/apt/keyrings/jenkins-keyring.asc]" \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt update
+sudo apt install jenkins -y
 
-#STEP-3: DOWNLOAD JAVA11 AND JENKINS
-sudo yum install java-17-amazon-corretto -y
-yum install jenkins -y
-update-alternatives --config java
-
-#STEP-4: RESTARTING JENKINS (when we download service it will on stopped state)
-systemctl start jenkins.service
-systemctl status jenkins.service
+sudo systemctl start jenkins
+sudo systemctl status jenkins
